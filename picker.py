@@ -1,8 +1,10 @@
 import streamlit as st
 import random
 
+
 def first(name):
-    return name.split(' ')[0]
+    return name.split(" ")[0]
+
 
 # TODO: curl this from somewhere, Gusto or Slack or something?
 # Adjectives from "One Takeaway" https://www.notion.so/streamlit/Q-A-Doc-c2353d2fff984211a8831a8dbe18db80
@@ -33,9 +35,7 @@ people = {
     "Thiago Teixeira": ["Gelling", "Cofounder & CTO"],
     "Tim Conkling": ["Hacker", "Core Eng"],
 }
-printable = {
-    name: f"{adj} {role}" for name, [adj, role] in people.items()
-}
+printable = {name: f"{adj} {role}" for name, [adj, role] in people.items()}
 shufflable = [f"{adj} {first(name)}" for name, [adj, role] in people.items()]
 
 st.title(f"{len(people)} people work at Streamlit!")
@@ -52,5 +52,14 @@ with st.beta_container():
     if st.sidebar.button("Get a random list of Streamlitians"):
         random.shuffle(shufflable)
         shufflable
+
+    if st.sidebar.button("Pick a Core Eng to review your PR"):
+        core_team = [
+            first(name)
+            for name, [adj, role] in people.items()
+            if role in ["Core Eng", "Core TL"]
+        ]
+        reviewer = random.choice(core_team)
+        st.header(f"{reviewer} is coming to the rescue 🦸")
 
 printable
